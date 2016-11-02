@@ -1,0 +1,77 @@
+<html>
+<head>
+    <title>reCAPTCHA</title>
+    <meta charset="utf-8" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        var timeLimit = %TIMELIMIT%;
+        var startTime = +new Date();
+        function callbackRecaptcha(response){
+            _AnyBalanceRecaptcha.onSolved(response);
+        }
+        function callbackTimeout(){
+            _AnyBalanceRecaptcha.onTimeout();
+        }
+        function tick(){
+            var elapsedTime = +new Date() - startTime;
+            var leftTime = Math.floor((timeLimit - elapsedTime)/1000);
+            if(leftTime <= 0){
+                callbackTimeout();
+                clearInterval(g_interval);
+                leftTime = 0;
+            }
+
+            document.getElementById('timer').innerHTML = formatTime(leftTime);
+        }
+
+        function formatTime(time){
+            // Minutes and seconds
+            var mins = ~~(time / 60);
+            var secs = time % 60;
+
+            // Hours, minutes and seconds
+            var hrs = ~~(time / 3600);
+            var mins = ~~((time % 3600) / 60);
+            var secs = time % 60;
+
+            // Output like "1:01" or "4:03:59" or "123:03:59"
+            var ret = "";
+
+            if (hrs > 0) {
+                ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+            }
+
+            ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+            ret += "" + secs;
+            return ret;
+        }
+
+        var g_interval = setInterval(tick, 500);
+        setTimeout(tick, 0);
+    </script>
+    <style>
+        .g-recaptcha{
+           margin: 15px auto !important;
+           width: auto !important;
+           height: auto !important;
+           text-align: -webkit-center;
+           text-align: -moz-center;
+           text-align: -o-center;
+           text-align: -ms-center;
+        }
+        #timer {
+            color: brown;
+        }
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<p>%TEXT%</p>
+<p><span id="timer"></span></p>
+<form action="?" method="POST">
+    <div class="g-recaptcha" data-sitekey="%SITEKEY%" data-size="compact" data-callback="callbackRecaptcha"></div>
+</form>
+</body>
+</html>

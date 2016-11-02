@@ -1,0 +1,7 @@
+<ivy-module version="2.0">
+    <info organisation="org.apache" module="recaptcha"/>
+    <dependencies>
+		<!-- https://mvnrepository.com/artifact/com.sun.net.httpserver/http -->
+		<dependency org="com.sun.net.httpserver" name="http" rev="20070405"/>
+    </dependencies>
+</ivy-module>
