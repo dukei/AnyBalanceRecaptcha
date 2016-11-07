@@ -140,16 +140,19 @@ public class MainController
     private void recaptcha(Map<String,String> params){
     	currentParams = params;
     	
+    	WebEngine engine = webView.getEngine();
+    	
     	if(!currentParams.containsKey("TIMELIMIT"))
     		currentParams.put("TIMELIMIT", "60000");
     	if(!currentParams.containsKey("TEXT"))
     		currentParams.put("TEXT", "");
+    	if(currentParams.containsKey("USERAGENT"))
+            engine.setUserAgent(currentParams.get("USERAGENT"));
     	
     	String url = params.get("URL");
     	
     	webView.getScene().getWindow().requestFocus();
 
-    	WebEngine engine = webView.getEngine();
         engine.load(url);
     }
     
