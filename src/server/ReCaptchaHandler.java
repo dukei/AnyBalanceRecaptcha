@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +56,8 @@ public class ReCaptchaHandler implements HttpHandler {
         os.write(response.getBytes());
         os.close();
 
-        System.out.println("-> /recaptcha?" + params);
-        System.out.println("<- " + he.getResponseCode() + " " + response);
+        System.out.println(new Date() + " -> /recaptcha?" + params);
+        System.out.println(new Date() + " <- " + he.getResponseCode() + " " + response);
 	}
 	
 	private Map<String,String> getPostParams(HttpExchange exchange) throws IOException{

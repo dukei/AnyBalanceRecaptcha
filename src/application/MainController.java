@@ -34,7 +34,7 @@ public class MainController
 			this.controller = controller;
 		}
 		public void onSolved(String response){
-			System.out.println("Captcha solved: " + response);
+			System.out.println("Captcha solved: \"" + response + "\"");
 			controller.onSolved(response);
 		}
 		public void onTimeout(){
@@ -88,6 +88,7 @@ public class MainController
     private WebView webView;
     @FXML
     private TextArea textArea;
+    private Bridge bridge;
 
     @FXML
     private void initialize()
@@ -101,8 +102,13 @@ public class MainController
                 @Override
                 public void changed(ObservableValue<? extends State> ov, State oldState, State newState) {
                     if (newState == State.SUCCEEDED) {
+                    		if(bridge == null) {
+                    			//We need to hold the variable to prevent it being garbage collected!
+                    			bridge = new Bridge(MainController.this);
+                    		}
+                    		
                             JSObject win = (JSObject) engine.executeScript("window");
-                            win.setMember("_AnyBalanceRecaptcha", new Bridge(MainController.this));
+                            win.setMember("_AnyBalanceRecaptcha", bridge);
                             
 //                            engine.executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}"); 
                         }

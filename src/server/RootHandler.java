@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 
 import application.MainController;
 
@@ -24,7 +25,7 @@ public class RootHandler implements HttpHandler {
             os.write(response.getBytes());
             os.close();
             
-            System.out.println("-> /");
-            System.out.println("<- " + he.getResponseCode() + " " + response);
+            System.out.println(new Date() + " -> /");
+            System.out.println(new Date() + " <- " + he.getResponseCode() + " " + response);
     }
 }

@@ -2,18 +2,18 @@ package application;
 	
 import java.io.IOException;
 import java.net.InetSocketAddress;
-
-import server.ReCaptchaHandler;
-import server.ResultHandler;
-import server.RootHandler;
+import java.util.Date;
 
 import com.sun.net.httpserver.HttpServer;
 
 import javafx.application.Application;
-import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.fxml.FXMLLoader;
+import javafx.stage.Stage;
+import server.ReCaptchaHandler;
+import server.ResultHandler;
+import server.RootHandler;
 
 
 public class Main extends Application {
@@ -52,7 +52,7 @@ public class Main extends Application {
 				int port = 1500;
 				try {
 					server = HttpServer.create(new InetSocketAddress(port), 0);
-					System.out.println("server started at " + port);
+					System.out.println(new Date() + ": server started at http://127.0.0.1:" + port);
 					server.createContext("/", new RootHandler(controller));
 					server.createContext("/recaptcha", new ReCaptchaHandler(controller));
 					server.createContext("/result", new ResultHandler(controller));

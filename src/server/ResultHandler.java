@@ -2,11 +2,12 @@ package server;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
-import application.MainController;
+import java.util.Date;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
+import application.MainController;
 
 public class ResultHandler implements HttpHandler {
 	private MainController controller;
@@ -38,8 +39,8 @@ public class ResultHandler implements HttpHandler {
         os.write(response.getBytes());
         os.close();
         
-        System.out.println("-> /result");
-        System.out.println("<- " + he.getResponseCode() + " " + response);
+        System.out.println(new Date() + " -> /result");
+        System.out.println(new Date() + " <- " + he.getResponseCode() + " " + response);
 	}
 	
 }
