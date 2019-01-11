@@ -9,6 +9,8 @@ import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -63,7 +65,8 @@ public class MainController
                     		map.put("%TIMELIMIT%", "60000");
                     		map.put("%TEXT%", "Пожалуйста, покажите, что вы не робот");
 */
-                    		return new ParametersConnection(u, getClass().getResource("template.html"), currentParams);
+                    		String type = currentParams.get("TYPE");
+                    		return new ParametersConnection(u, getClass().getResource("V3".equals(type) ? "template3.html" : "template.html"), currentParams);
                     	}else{
                     		try {
 								Class<?> c = Class.forName("sun.net.www.protocol." + protocol + ".Handler");
@@ -147,6 +150,14 @@ public class MainController
     	currentParams = params;
     	
     	WebEngine engine = webView.getEngine();
+    	
+    	String sitekey = currentParams.get("SITEKEY");
+    	if(sitekey.startsWith("{")) {
+    		JSONObject obj = new JSONObject(sitekey);
+    		currentParams.put("SITEKEY", obj.optString("SITEKEY"));
+    		currentParams.put("TYPE", obj.optString("TYPE"));
+        	currentParams.put("ACTION", obj.optString("ACTION"));
+    	}
     	
     	if(!currentParams.containsKey("TIMELIMIT"))
     		currentParams.put("TIMELIMIT", "60000");
